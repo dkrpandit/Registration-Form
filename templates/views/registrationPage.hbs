@@ -7,7 +7,8 @@
     <title>Forms</title>
     <style>
         input,
-        label,select {
+        label,
+        select {
             margin-top: 20px;
         }
 
@@ -22,16 +23,16 @@
     <h1>Registrations forms</h1>
     <form action="/registrationPage" method="POST">
         <label for="FirstName">First Name :</label>
-        <input type="text" name="FirstName" id="FirstName"><br>
+        <input type="text" name="firstName" id="FirstName"><br>
         <label for="lastName">Last Name :</label>
         <input type="text" name="lastName" id="lastName"><br>
         <label for="gender">Gender :</label>
         <label for="male">Male</label>
-        <input type="radio" name="gender" id="male">
+        <input type="radio" value="male" name="gender" id="male">
         <label for="female">Female</label>
-        <input type="radio" name="gender" id="female">
+        <input type="radio" value="female" name="gender" id="female">
         <label for="other">Other</label>
-        <input type="radio" name="gender" id="other"><br>
+        <input type="radio" value="other" name="gender" id="other"><br>
         <label for="year">Choose Year : </label>
 
         <select name="year" id="year">
@@ -48,11 +49,12 @@
         <label for="mobileNumber">Mobile Number</label>
         <input type="number" name="mobileNumber" id="mobileNumber"><br>
         <label for="enrolmentId">Enrolment ID (EID) :</label>
-        <input type="text" name="enrolmentId" id="enrolmentId"><br>
+        <input type="text" name="eid" id="enrolmentId"><br>
         <label for="password">Password :</label>
         <input type="password" name="password" id="password"><br>
-        <label for="ConformPassword">Conform Password :</label>
-        <input type="password" name="ConformPassword" id="ConformPassword"><br>
+        <label for="ConfirmPassword">Conform Password :</label>
+        <input type="password" name="ConfirmPassword" id="ConformPassword"><br>
+
         <input type="submit" value="Submit Now">
         <input type="reset" value="Clear Data">
     </form>

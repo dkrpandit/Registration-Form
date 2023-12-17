@@ -45,4 +45,4 @@ const studentSchema = new mongoose.Schema({
 
 const Registrations = new mongoose.model("StudentRegistration", studentSchema);
 
-module.exports = Registrations()
+module.exports = Registrations
