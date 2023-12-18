@@ -62,8 +62,15 @@ app.post("/login", async (req, res) => {
         const enrolmentNo = req.body.eid;
         const password = req.body.password;
 
-        res.send(enrolmentNo);
-        res.send(password);
+        // res.send(enrolmentNo);
+        // res.send(password);
+
+        // console.log(` enrolment number is :- ${enrolmentNo}   password ${password}`)
+
+        // read the data from the databases
+       const enrolmentID = await studentRegistrations.studentregistrations.findOne({eid:enrolmentNo});
+       res.send(enrolmentID)
+       console.log(enrolmentID);
     } catch (error) {
         console.log(error);
         res.status(400).send("Error in login data ")
