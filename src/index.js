@@ -26,6 +26,9 @@ app.get("/", (req, res) => {
 app.get("/registrationPage", (req, res) => {
     res.render("registrationPage");
 })
+app.get("/login", (req, res) => {
+    res.render("login");
+})
 app.post("/registrationPage", async (req, res) => {
     try {
 
@@ -47,10 +50,24 @@ app.post("/registrationPage", async (req, res) => {
         res.status(201).render("index");
 
     } catch (error) {
-        console.error(error);
+        console.log(error);
         res.status(400).send("Error in registration. Please try again.");
     }
 
+})
+
+
+app.post("/login", async (req, res) => {
+    try {
+        const enrolmentNo = req.body.eid;
+        const password = req.body.password;
+
+        res.send(enrolmentNo);
+        res.send(password);
+    } catch (error) {
+        console.log(error);
+        res.status(400).send("Error in login data ")
+    }
 })
 
 // app.listen(5000) // this works only in our local system thats why we are not using this

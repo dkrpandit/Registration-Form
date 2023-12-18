@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login page</title>
+    <style>
+        input,button{
+            margin-top: 12px;
+        }
+        h1,form{
+            margin-left: 150px;
+        }
+    </style>
 </head>
 <body>
-    <h3>login page</h3>
-    <a href="registrationPage">registration</a>
+    <h1>login page</h1>
+    <form action="/login" method="POST" >
+    <label for="eid">Enrolment ID (EID) :</label>
+    <input type="text" name="eid" id="eid"><br>
+    <label for="password">Password :</label>
+    <input type="password" name="password" id="password"><br>
+    
+    {{!-- <input type="submit" value="Login"> --}}
+    <button type="submit">Login</button>
+    </form>
+
 </body>
 </html>
