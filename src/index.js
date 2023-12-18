@@ -62,20 +62,29 @@ app.post("/login", async (req, res) => {
         const enrolmentNo = req.body.eid;
         const password = req.body.password;
 
-        // res.send(enrolmentNo);
-        // res.send(password);
-
-        // console.log(` enrolment number is :- ${enrolmentNo}   password ${password}`)
-
         // read the data from the databases
-       const enrolmentID = await studentRegistrations.studentregistrations.findOne({eid:enrolmentNo});
-       res.send(enrolmentID)
-       console.log(enrolmentID);
+        const enrolmentID = await Registrations.findOne({ eid: enrolmentNo });
+        
+        // if (!enrolmentID) {
+        //     return res.status(404).send("User not found");
+        // }
+
+        if(enrolmentID.password === password){
+            res.status(201).render("index");
+        }else
+        {
+            res.status(404).send("User not found");
+        }
+
+        // res.send(enrolmentID.eid);
+        // console.log(enrolmentID);
+
     } catch (error) {
         console.log(error);
-        res.status(400).send("Error in login data ")
+        res.status(400).send("Error in login data ");
     }
-})
+});
+
 
 // app.listen(5000) // this works only in our local system thats why we are not using this
 
