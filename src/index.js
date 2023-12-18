@@ -78,7 +78,6 @@ app.post("/login", async (req, res) => {
 
         // res.send(enrolmentID.eid);
         // console.log(enrolmentID);
-
     } catch (error) {
         console.log(error);
         res.status(400).send("Error in login data ");
