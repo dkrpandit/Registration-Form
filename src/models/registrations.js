@@ -1,6 +1,8 @@
 
 const mongoose = require("mongoose");
 
+const bcryptjs = require("bcryptjs");
+
 const studentSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -41,6 +43,17 @@ const studentSchema = new mongoose.Schema({
         required: true,
     }
 
+})
+
+// for hashing our password using bcrypt algorithm
+studentSchema.pre("save", async function (next) {
+
+    if(this.isModified("password")){
+        
+        console.log(`Before hashing the password is ${this.password}`);
+        this.password = await bcryptjs.hash(this.password,10);
+        console.log(`After hashing the password is ${this.password}`);
+    }
 })
 
 const Registrations = new mongoose.model("StudentRegistration", studentSchema);

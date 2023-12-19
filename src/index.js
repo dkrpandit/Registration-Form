@@ -4,6 +4,8 @@ const app = express();
 const hbs = require("hbs");
 require("./database/connection");
 
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 const static_path = path.join(__dirname, "../public")
@@ -64,15 +66,14 @@ app.post("/login", async (req, res) => {
 
         // read the data from the databases
         const enrolmentID = await Registrations.findOne({ eid: enrolmentNo });
-        
+
         // if (!enrolmentID) {
         //     return res.status(404).send("User not found");
         // }
 
-        if(enrolmentID.password === password){
+        if (enrolmentID.password === password) {
             res.status(201).render("index");
-        }else
-        {
+        } else {
             res.status(404).send("User not found");
         }
 
