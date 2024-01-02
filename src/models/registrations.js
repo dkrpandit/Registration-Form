@@ -56,18 +56,39 @@ const studentSchema = new mongoose.Schema({
 
 
 // generating token
+
+/* 
 studentSchema.methods.generateAuthToken = async function () {
     try {
-        const token = jwt.sign({ _id: this._id.toString() }, "dharmendrapanditmadhubanibiharnodejs") //min 32 character
+        // const token = jwt.sign({ _id: this._id.toString() }, "dharmendrapanditmadhubanibiharnodejs") //min 32 character
+        const token = jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY)
         this.tokens = this.tokens.concat({token:token});
         console.log(token)
         await this.save();
         return token;
     } catch (error) {
         res.sed("this is error part", error)
-        console.log("this is error part", error)
+        console.log("Error generating auth token:", error);
     }
 }
+*/
+ 
+studentSchema.methods.generateAuthToken = async function (res) {
+    try {
+        // const token = jwt.sign({ _id: this._id.toString() }, "dharmendrapanditmadhubanibiharnodejs") //min 32 character
+        const token = jwt.sign({ _id: this._id.toString() }, process.env.SECRET_KEY)
+        this.tokens = this.tokens.concat({token:token});
+        console.log(token)
+        await this.save();
+        res.header('auth-token', token);
+        return token;
+    } catch (error) {
+        res.sed("this is error part", error)
+        console.log("Error generating auth token:", error);
+    }
+}
+
+
 
 // convert password into hashing password using bcrypt algorithm
 studentSchema.pre("save", async function (next) {

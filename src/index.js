@@ -53,7 +53,9 @@ app.post("/registrationPage", async (req, res) => {
             password: req.body.password
         })
 
-        const token = await newRegistrations.generateAuthToken();
+        const token = await newRegistrations.generateAuthToken(res);
+
+        res.cookie("jwt",token)
 
         const registered = await newRegistrations.save();
         res.status(201).render("index");
@@ -94,7 +96,7 @@ app.post("/login", async (req, res) => {
         res.status(400).send("Error in login data ");
     }
 });
-
+console.log(process.env.SECRET_KEY)
 
 // app.listen(5000) // this works only in our local system thats why we are not using this
 
