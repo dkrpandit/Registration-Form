@@ -2,9 +2,11 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const hbs = require("hbs");
+const jwt = require("jsonwebtoken");
+
 require("./database/connection");
 
-
+const bcrypt = require("bcryptjs")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -20,7 +22,7 @@ app.set("view engine", "hbs");
 app.set("views", templates_path);
 hbs.registerPartials(partials_path);
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -48,6 +50,9 @@ app.post("/registrationPage", async (req, res) => {
             eid: req.body.eid,
             password: req.body.password
         })
+
+        const token = await newRegistrations.generateAuthToken();
+
         const registered = await newRegistrations.save();
         res.status(201).render("index");
 
@@ -70,8 +75,11 @@ app.post("/login", async (req, res) => {
         // if (!enrolmentID) {
         //     return res.status(404).send("User not found");
         // }
-
-        if (enrolmentID.password === password) {
+        const verifyPassword = await bcrypt.compare(password,enrolmentID.password);
+        const token = await enrolmentID.generateAuthToken();
+        console.log("login wala token ", token)
+        // if (enrolmentID.password === password) { // when we directly compare entered password with databases password
+        if (verifyPassword) {
             res.status(201).render("index");
         } else {
             res.status(404).send("User not found");

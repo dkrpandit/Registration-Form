@@ -3,6 +3,9 @@ const mongoose = require("mongoose");
 
 const bcryptjs = require("bcryptjs");
 
+const jwt = require("jsonwebtoken");
+
+
 const studentSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -41,21 +44,44 @@ const studentSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true,
+        }
+    }]
 
 })
 
-// for hashing our password using bcrypt algorithm
+
+// generating token
+studentSchema.methods.generateAuthToken = async function () {
+    try {
+        const token = jwt.sign({ _id: this._id.toString() }, "dharmendrapanditmadhubanibiharnodejs") //min 32 character
+        this.tokens = this.tokens.concat({token:token});
+        console.log(token)
+        await this.save();
+        return token;
+    } catch (error) {
+        res.sed("this is error part", error)
+        console.log("this is error part", error)
+    }
+}
+
+// convert password into hashing password using bcrypt algorithm
 studentSchema.pre("save", async function (next) {
 
-    if(this.isModified("password")){
-        
-        console.log(`Before hashing the password is ${this.password}`);
-        this.password = await bcryptjs.hash(this.password,10);
-        console.log(`After hashing the password is ${this.password}`);
+    if (this.isModified("password")) {
+
+        // console.log(`Before hashing the password is ${this.password}`);
+        this.password = await bcryptjs.hash(this.password, 10);
+        // console.log(`After hashing the password is ${this.password}`);
     }
 })
 
 const Registrations = new mongoose.model("StudentRegistration", studentSchema);
 
 module.exports = Registrations
+
+

@@ -21,7 +21,7 @@
 
 <body>
     <h1>Registrations forms</h1>
-    <form action="/registrationPage" method="POST">
+    <form action="/registrationPage" method="POST" id="registrationForm">
         <label for="FirstName">First Name :</label>
         <input type="text" name="firstName" id="FirstName"><br>
         <label for="lastName">Last Name :</label>
@@ -55,10 +55,43 @@
         <label for="ConfirmPassword">Conform Password :</label>
         <input type="password" name="ConfirmPassword" id="ConformPassword"><br>
 
-        <input type="submit" value="Submit Now">
+     
+        <input type="submit" value="Submit Now" id="submitButton">
         <input type="reset" value="Clear Data">
     </form>
+    <script>
 
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            const firstName = document.getElementById("FirstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const year = document.getElementById("year").value;
+            const city = document.getElementById("city").value;
+            const email = document.getElementById("email").value;
+            const mobileNumber = document.getElementById("mobileNumber").value;
+            const enrolmentId = document.getElementById("enrolmentId").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("ConformPassword").value;
+
+            // Check if any required field is empty
+            if (
+                firstName === "" ||
+                lastName === "" ||
+                !gender ||
+                year === "" ||
+                city === "" ||
+                email === "" ||
+                mobileNumber === "" ||
+                enrolmentId === "" ||
+                password === "" ||
+                confirmPassword === ""
+            ) {
+                alert("Please fill in all the required fields.");
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+
+    </script>
 </body>
 
 </html>
