@@ -4,18 +4,21 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const hbs = require("hbs");
+const Registrations = require("./models/registrations")
 const jwt = require("jsonwebtoken");
-
+const cookieParser = require("cookie-parser");
+const auth = require("../src/middleware/auth");
 require("./database/connection");
 
 const bcrypt = require("bcryptjs")
 
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 const static_path = path.join(__dirname, "../public")
 const templates_path = path.join(__dirname, "../templates/views");
 const partials_path = path.join(__dirname, "../templates/partials");
-const Registrations = require("./models/registrations")
+
 // console.log("path",partials_path)
 
 app.use(express.static(static_path));  //shows the static html pages
@@ -28,6 +31,11 @@ const port = process.env.PORT || 5000
 
 app.get("/", (req, res) => {
     res.render("index");
+})
+app.get("/privatePage", auth, (req, res) => {
+    console.log("cookies mil raha hai", req.cookies.jwt)
+    res.render("privatePage");
+    // res.send("dfdfd")
 })
 app.get("/registrationPage", (req, res) => {
     res.render("registrationPage");
@@ -56,7 +64,7 @@ app.post("/registrationPage", async (req, res) => {
         const token = await newRegistrations.generateAuthToken(res);
 
         // Set expiration time to 30 seconds from the current time
-        const expirationTime = new Date(Date.now() + 30000);
+        const expirationTime = new Date(Date.now() + 600000);
 
         res.cookie("jwt", token, {
             expires: expirationTime,
@@ -89,7 +97,7 @@ app.post("/login", async (req, res) => {
         // console.log("login wala token ", token)
 
         // Set expiration time to 30 seconds from the current time
-        const expirationTime = new Date(Date.now() + 30000);
+        const expirationTime = new Date(Date.now() + 600000);
         res.cookie("jwt", token, {
             expires: expirationTime,
             httpOnly: true
