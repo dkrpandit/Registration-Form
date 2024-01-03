@@ -55,7 +55,14 @@ app.post("/registrationPage", async (req, res) => {
 
         const token = await newRegistrations.generateAuthToken(res);
 
-        res.cookie("jwt",token)
+        // Set expiration time to 30 seconds from the current time
+        const expirationTime = new Date(Date.now() + 30000);
+
+        res.cookie("jwt", token, {
+            expires: expirationTime,
+            httpOnly: true
+        });
+
 
         const registered = await newRegistrations.save();
         res.status(201).render("index");
@@ -76,13 +83,17 @@ app.post("/login", async (req, res) => {
         // read the data from the databases
         const enrolmentID = await Registrations.findOne({ eid: enrolmentNo });
 
-        // if (!enrolmentID) {
-        //     return res.status(404).send("User not found");
-        // }
-        const verifyPassword = await bcrypt.compare(password,enrolmentID.password);
-        const token = await enrolmentID.generateAuthToken();
-        console.log("login wala token ", token)
-        // if (enrolmentID.password === password) { // when we directly compare entered password with databases password
+        const verifyPassword = await bcrypt.compare(password, enrolmentID.password);
+
+        const token = await enrolmentID.generateAuthToken(res);
+        // console.log("login wala token ", token)
+
+        // Set expiration time to 30 seconds from the current time
+        const expirationTime = new Date(Date.now() + 30000);
+        res.cookie("jwt", token, {
+            expires: expirationTime,
+            httpOnly: true
+        });
         if (verifyPassword) {
             res.status(201).render("index");
         } else {
